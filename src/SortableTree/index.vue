@@ -44,6 +44,7 @@ let sortableInstance: Sortable | null = null;
 const {
   flattenedItems,
   visibleItems,
+  tempHiddenIds,
   toggleExpand,
   isExpanded,
   expandNode,
@@ -119,9 +120,9 @@ function initSortable() {
         insertNodeAt(evt.from, evt.item, from);
       }
 
-      if (item.hasChildren) showChildren(item.id);
-
       handleDragEnd(item, from, to);
+
+      if (item.hasChildren) showChildren(item.id);
     },
   });
 }
@@ -190,6 +191,7 @@ defineExpose({
   <div ref="listRef">
     <div
       v-for="(item, index) in visibleItems"
+      v-show="!tempHiddenIds.has(item.id)"
       :key="item.id"
       :class="{
         'vue-sortable-item': true,

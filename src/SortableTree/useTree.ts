@@ -42,7 +42,7 @@ export function useTree(
       const parentPath = item.path.slice(0, -1);
       const parentId = parentPath[parentPath.length - 1];
       if (!parentId) return true;
-      return !collapsed.has(parentId) && !tempHiddenIds.value.has(item.id);
+      return !collapsed.has(parentId);
     });
   });
 
@@ -100,6 +100,7 @@ export function useTree(
   return {
     flattenedItems,
     visibleItems,
+    tempHiddenIds,
     toggleExpand,
     isExpanded,
     expandAll,
