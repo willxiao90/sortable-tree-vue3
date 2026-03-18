@@ -53,7 +53,7 @@ export function buildTree(
   fieldNames: Required<CustomFieldNames>,
 ): TreeItem[] {
   const root: TreeItem = {
-    [fieldNames.id]: "root",
+    [fieldNames.id]: "__root",
     [fieldNames.label]: "",
     [fieldNames.children]: [],
   };
