@@ -61,7 +61,6 @@ const handleChange = (data: TreeItem[]) => {
 | `indentationWidth` | `number` | `24` | 每个层级缩进的像素宽度 |
 | `defaultExpandedLevels` | `number` | `-1` | 默认展开的层级数，`-1` 展开所有，`0` 折叠所有 |
 | `maxDepth` | `number` | `Infinity` | 限制树节点最大深度 |
-| `fieldNames` | `{ id?: string; label?: string; children?: string;}` | `{ id: "id", label: "label", children: "children" }` | 指定节点数据中的字段名 |
 | `disabled` | `boolean \| (item, index) => boolean` | `false` | 禁用节点，可为布尔值或函数 |
 | `delay` | `number` | `150` | 拖拽延迟（毫秒） |
 | `animation` | `number` | `150` | 排序动画时长（毫秒） |
@@ -77,9 +76,9 @@ const handleChange = (data: TreeItem[]) => {
 
 ```typescript
 interface TreeItem {
-  id?: string | number // 唯一标识
+  id: string | number // 必须唯一
   label?: string
-  children?: TreeItem[]
+  children: TreeItem[]
   [key: string]: any
 }
 ```
@@ -146,7 +145,6 @@ treeRef.value?.scrollIntoView('node-id', { behavior: "smooth", block: "center" }
 ```vue
 <template>
   <SortableTree :items="items" @change="handleChange">
-    <!-- 可自定义整个树节点 -->
     <template #default="{ item, depth, isLeaf, isExpanded, toggleExpand }">
       <div class="folder-item" :style="{ paddingLeft: `${depth * 30}px` }">
         <!-- 自定义展开/收起图标 -->
@@ -231,7 +229,6 @@ const isDisabled = (item: any, index: number) => {
 
 - jd-sortable-item
 - jd-sortable-tree-node
-- jd-sortable-tree-node-label
 - jd-sortable-tree-icon
 - jd-sortable-tree-icon-expanded
 - jd-sortable-tree-icon-collapsed

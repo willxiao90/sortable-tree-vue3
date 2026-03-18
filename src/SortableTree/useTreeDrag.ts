@@ -5,13 +5,11 @@ import type {
   FlattenedItem,
   SortableTreeProps,
   SortableTreeEmits,
-  CustomFieldNames,
 } from "../types/tree";
 import { arrayMove, buildTree, flattenTree, getProjection } from "../utils";
 
 export function useTreeDrag(
   props: Required<SortableTreeProps>,
-  fieldNames: Required<CustomFieldNames>,
   visibleItems: ComputedRef<FlattenedItem[]>,
   emit: SortableTreeEmits,
 ) {
@@ -141,7 +139,7 @@ export function useTreeDrag(
 
     if (from !== to || depth !== item.depth) {
       const clonedItems: FlattenedItem[] = JSON.parse(
-        JSON.stringify(flattenTree(props.items, fieldNames)),
+        JSON.stringify(flattenTree(props.items)),
       );
 
       const overIndex = clonedItems.findIndex(({ id }) => id === state.overId);
@@ -153,7 +151,7 @@ export function useTreeDrag(
       clonedItems[activeIndex] = { ...activeItem, depth, parentId };
 
       const sortedItems = arrayMove(clonedItems, activeIndex, overIndex);
-      const newTree = buildTree(sortedItems, fieldNames);
+      const newTree = buildTree(sortedItems);
       emit("change", newTree);
     }
 

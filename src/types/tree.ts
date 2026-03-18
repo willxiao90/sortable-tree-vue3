@@ -3,14 +3,6 @@
  */
 export type UniqueIdentifier = string | number;
 
-export type ClassName = string | string[] | Record<string, boolean>
-
-export interface CustomFieldNames {
-  id?: string;
-  label?: string;
-  children?: string;
-}
-
 /**
  * 表示层级数据结构中的单个节点。
  *
@@ -20,9 +12,9 @@ export interface CustomFieldNames {
  * - 允许额外的任意属性以支持自定义元数据
  */
 export interface TreeItem {
-  id?: UniqueIdentifier;
+  id: UniqueIdentifier;
   label?: string;
-  children?: TreeItem[];
+  children: TreeItem[];
   [key: string]: any;
 }
 
@@ -88,9 +80,6 @@ export interface SortableTreeProps {
 
   /** 限制树节点最大深度 */
   maxDepth?: number;
-
-  /** 指定节点数据中的字段名 */
-  fieldNames?: CustomFieldNames;
 
   /**
    * 禁用节点，可为布尔值或函数

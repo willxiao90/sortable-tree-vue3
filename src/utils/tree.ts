@@ -3,13 +3,11 @@ import type {
   TreeItem,
   FlattenedItem,
   DragProjection,
-  CustomFieldNames,
 } from "../types/tree";
 import { arrayMove } from "./array";
 
 export function flattenTree(
   items: TreeItem[],
-  fieldNames: Required<CustomFieldNames>,
   parentId: UniqueIdentifier | null = null,
   depth = 0,
   path: UniqueIdentifier[] = [],
@@ -17,10 +15,9 @@ export function flattenTree(
   const result: FlattenedItem[] = [];
 
   for (const item of items) {
-    const field = getFieldInfo(item, fieldNames);
-    const id = field.id;
+    const id = item.id;
     const currentPath = [...path, id];
-    const hasChildren = !!(field.children && field.children.length > 0);
+    const hasChildren = !!(item.children && item.children.length > 0);
 
     result.push({
       id,
@@ -34,13 +31,7 @@ export function flattenTree(
 
     if (hasChildren) {
       result.push(
-        ...flattenTree(
-          field.children ?? [],
-          fieldNames,
-          id,
-          depth + 1,
-          currentPath,
-        ),
+        ...flattenTree(item.children ?? [], id, depth + 1, currentPath),
       );
     }
   }
@@ -48,37 +39,28 @@ export function flattenTree(
   return result;
 }
 
-export function buildTree(
-  flattenedItems: FlattenedItem[],
-  fieldNames: Required<CustomFieldNames>,
-): TreeItem[] {
-  const root: TreeItem = {
-    [fieldNames.id]: "__root",
-    [fieldNames.label]: "",
-    [fieldNames.children]: [],
-  };
-  const rootId = root[fieldNames.id] as string;
-  const nodes: Record<string, TreeItem> = { [rootId]: root };
+export function buildTree(flattenedItems: FlattenedItem[]): TreeItem[] {
+  const root: TreeItem = { id: "__root", children: [] };
+  const nodes: Record<string, TreeItem> = { [root.id]: root };
   const items: TreeItem[] = flattenedItems.map((item) => ({
     ...item.originalItem,
-    [fieldNames.children]: [],
+    children: [],
   }));
 
   for (const item of items) {
-    const itemId = item[fieldNames.id];
-    const flatItem = flattenedItems.find(({ id }) => id === itemId);
+    const flatItem = flattenedItems.find(({ id }) => id === item.id);
     if (!flatItem) continue;
 
-    const parentId = flatItem.parentId ?? rootId;
+    const parentId = flatItem.parentId ?? root.id;
     const parent = nodes[parentId] ?? items.find(({ id }) => id === parentId);
 
     if (!parent) continue;
 
-    nodes[itemId] = item;
-    parent[fieldNames.children]!.push(item);
+    nodes[item.id] = item;
+    parent.children!.push(item);
   }
 
-  return root[fieldNames.children] ?? [];
+  return root.children!;
 }
 
 export function getProjection(
@@ -184,10 +166,3 @@ export function getTreeHeight(item: TreeItem, initial: number = 0): number {
   return res;
 }
 
-export function getFieldInfo(item: TreeItem, fieldNames: Required<CustomFieldNames>) {
-  return {
-    id: item[fieldNames.id] as UniqueIdentifier,
-    label: item[fieldNames.label] as string,
-    children: item[fieldNames.children] as TreeItem[],
-  };
-}

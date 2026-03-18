@@ -17,7 +17,6 @@ const props = withDefaults(defineProps<SortableTreeProps>(), {
   indentationWidth: 24,
   defaultExpandedLevels: -1, // 默认展开的层级数，-1 展开所有，0 折叠所有
   maxDepth: Infinity,
-  fieldNames: () => ({ id: "id", label: "label", children: "children" }),
   disabled: false,
   delay: 0,
   animation: 150,
@@ -29,11 +28,6 @@ const props = withDefaults(defineProps<SortableTreeProps>(), {
   dragClass: "sortable-drag",
   fallbackClass: "sortable-fallback",
 });
-
-const fieldNames = Object.assign(
-  { id: "id", label: "label", children: "children" },
-  props.fieldNames,
-);
 
 const emit = defineEmits<SortableTreeEmits>();
 
@@ -51,7 +45,7 @@ const {
   expandAll,
   hideChildren,
   showChildren,
-} = useTree(props, fieldNames);
+} = useTree(props);
 
 const {
   dragState,
@@ -61,7 +55,6 @@ const {
   handleDragOver,
 } = useTreeDrag(
   props,
-  fieldNames,
   computed(() => visibleItems.value),
   emit,
 );
@@ -85,7 +78,7 @@ function initSortable() {
     ghostClass: props.ghostClass,
     chosenClass: props.chosenClass,
     dragClass: props.dragClass,
-    forceFallback: true, // ignore the HTML5 DnD behaviour and force the fallback to kick in
+    forceFallback: true, // 强制使用后备模式，不用 HTML5 原生拖拽
     fallbackClass: props.fallbackClass,
     onStart: (evt) => {
       const index = evt.oldIndex!;
@@ -231,9 +224,7 @@ defineExpose({
             •
           </span>
 
-          <span class="jd-sortable-tree-node-label">{{
-            item.originalItem[fieldNames.label]
-          }}</span>
+          <span>{{ item.originalItem.label }}</span>
         </div>
       </slot>
     </div>

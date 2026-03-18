@@ -3,14 +3,11 @@ import type {
   UniqueIdentifier,
   FlattenedItem,
   SortableTreeProps,
-  TreeItem,
-  CustomFieldNames,
 } from "../types/tree";
-import { flattenTree, getDescendants, getFieldInfo } from "../utils/tree";
+import { flattenTree, getDescendants } from "../utils/tree";
 
 export function useTree(
   props: Required<SortableTreeProps>,
-  fieldNames: Required<CustomFieldNames>,
 ) {
   const flattenedItems = ref<FlattenedItem[]>([]);
   const collapsedIds = ref<Set<UniqueIdentifier>>(new Set());
@@ -18,8 +15,8 @@ export function useTree(
   const firstRender = ref(true);
 
   function buildFlattenedItems() {
-    flattenedItems.value = flattenTree(props.items, fieldNames);
-    console.log("flattened items:", flattenedItems.value);
+    flattenedItems.value = flattenTree(props.items);
+    // console.log("flattened items:", flattenedItems.value);
 
     if (firstRender.value && props.defaultExpandedLevels >= 0) {
       const maxDepth = props.defaultExpandedLevels - 1;
@@ -71,13 +68,9 @@ export function useTree(
       const targetItem = flattenedItems.value.find((item) => item.id === id);
       if (!targetItem) return;
 
-      const targetItemChildren = targetItem.originalItem[
-        fieldNames.children
-      ] as TreeItem[];
-      targetItemChildren?.forEach((item) => {
-        const field = getFieldInfo(item, fieldNames);
-        const hasChildren = !!(field.children && field.children.length > 0);
-        if (hasChildren) expandNode(field.id, false);
+      targetItem.originalItem.children?.forEach((item) => {
+        const hasChildren = !!(item.children && item.children.length > 0);
+        if (hasChildren) expandNode(item.id, false);
       });
     }
   }
