@@ -1,3 +1,7 @@
+[![npm](https://img.shields.io/npm/v/sortable-tree-vue3)](https://www.npmjs.com/package/sortable-tree-vue3)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Demo](https://img.shields.io/badge/Demo-Online-brightgreen)](https://willxiao90.github.io/sortable-tree-vue3/)
+
 # vue-sortable-tree
 
 基于 Vue 3 + SortableJS 的高性能可拖拽树形组件，支持无限层级的树形结构。
@@ -11,6 +15,9 @@
 - 🔒 支持禁用特定节点
 - 🎯 支持动态新增和删除
 - 📦 完整 TypeScript 类型支持
+
+## Demo
+[https://willxiao90.github.io/sortable-tree-vue3/](https://willxiao90.github.io/sortable-tree-vue3/)
 
 ## 安装
 
@@ -233,3 +240,7 @@ const isDisabled = (item: any, index: number) => {
 - vue-sortable-tree-icon-expanded
 - vue-sortable-tree-icon-collapsed
 - vue-sortable-tree-icon-leaf
+
+## 协议
+
+本项目采用 [MIT](https://opensource.org/licenses/MIT) 许可证。
