@@ -62,7 +62,7 @@ const handleRemoveNode = (id: string | number) => {
 
 <template>
   <section class="demo-section">
-<h2>Dynamic Add and Remove</h2>
+    <h2>Dynamic Add and Remove</h2>
     <p class="demo-description">Dynamically add and remove nodes</p>
     <div class="demo-controls">
       <button @click="addFolder">Add Folder</button>
@@ -92,12 +92,7 @@ const handleRemoveNode = (id: string | number) => {
               {{ isLeaf ? "📁" : isExpanded ? "📂" : "📁" }}
             </span>
             <span class="folder-name">{{ item.label }}</span>
-            <button
-              class="delete-btn"
-              @click.stop="handleRemoveNode(flattenedItem.id)"
-            >
-              X
-            </button>
+            <button class="delete-btn" @click.stop="handleRemoveNode(flattenedItem.id)">X</button>
           </div>
         </template>
       </SortableTree>
@@ -113,7 +108,7 @@ const handleRemoveNode = (id: string | number) => {
   border-radius: 6px;
 }
 
-.folder-item:hover{
+.folder-item:hover {
   background: rgba(0, 0, 0, 0.05);
 }
 

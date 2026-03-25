@@ -18,9 +18,7 @@ const handleChange = (data: TreeItem[]) => {
 };
 
 const handleStart = (data: { item: FlattenedItem; index: number }) => {
-  log(
-    `Started dragging: "${data.item.originalItem.label}" at index ${data.index}`,
-  );
+  log(`Started dragging: "${data.item.originalItem.label}" at index ${data.index}`);
 };
 
 const handleOver = (data: { item: FlattenedItem; index: number }) => {
@@ -50,7 +48,7 @@ const collapseAll = () => {
 
 <template>
   <section class="demo-section">
-<h2>Basic Example</h2>
+    <h2>Basic Example</h2>
     <p class="demo-description">Drag to reorder nodes and change hierarchy</p>
     <div class="demo-controls">
       <button @click="resetTree">Reset</button>

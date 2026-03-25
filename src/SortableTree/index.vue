@@ -47,13 +47,7 @@ const {
   showChildren,
 } = useTree(props);
 
-const {
-  dragState,
-  projection,
-  handleDragStart,
-  handleDragEnd,
-  handleDragOver,
-} = useTreeDrag(
+const { dragState, projection, handleDragStart, handleDragEnd, handleDragOver } = useTreeDrag(
   props,
   computed(() => visibleItems.value),
   emit,
@@ -91,11 +85,9 @@ function initSortable() {
         const timer = setTimeout(() => {
           hideChildren(item.id);
         }, 100);
-        originalEvent.target?.addEventListener(
-          "mouseup",
-          () => clearTimeout(timer),
-          { once: true },
-        );
+        originalEvent.target?.addEventListener("mouseup", () => clearTimeout(timer), {
+          once: true,
+        });
       }
     },
     onChange: (evt) => {
@@ -120,10 +112,7 @@ function initSortable() {
   });
 }
 
-function scrollIntoView(
-  id: UniqueIdentifier,
-  options?: ScrollIntoViewOptions | boolean,
-): void {
+function scrollIntoView(id: UniqueIdentifier, options?: ScrollIntoViewOptions | boolean): void {
   const targetItem = flattenedItems.value.find((item) => item.id === id);
   if (!targetItem) return;
 
@@ -137,18 +126,13 @@ function scrollIntoView(
     const domElement = listRef.value?.querySelector(
       `[data-id="${String(id)}"]`,
     ) as HTMLElement | null;
-    domElement?.scrollIntoView(
-      options ?? { behavior: "smooth", block: "center" },
-    );
+    domElement?.scrollIntoView(options ?? { behavior: "smooth", block: "center" });
   });
 }
 
 const itemDepth = (item: FlattenedItem, _index: number) => {
-  const isDragging =
-    dragState.value.isDragging && dragState.value.draggedId === item.id;
-  const depth = isDragging
-    ? (projection.value?.depth ?? item.depth)
-    : item.depth;
+  const isDragging = dragState.value.isDragging && dragState.value.draggedId === item.id;
+  const depth = isDragging ? (projection.value?.depth ?? item.depth) : item.depth;
   return depth;
 };
 
@@ -220,9 +204,7 @@ defineExpose({
           >
             {{ isExpanded(item.id) ? "▼" : "▶" }}
           </span>
-          <span v-else class="vue-sortable-tree-icon vue-sortable-tree-icon-leaf">
-            •
-          </span>
+          <span v-else class="vue-sortable-tree-icon vue-sortable-tree-icon-leaf"> • </span>
 
           <span>{{ item.originalItem.label }}</span>
         </div>

@@ -18,9 +18,7 @@ const handleChange = (data: TreeItem[]) => {
 };
 
 const handleStart = (data: { item: FlattenedItem; index: number }) => {
-  log(
-    `Started dragging: "${data.item.originalItem.label}" at index ${data.index}`,
-  );
+  log(`Started dragging: "${data.item.originalItem.label}" at index ${data.index}`);
 };
 
 const handleOver = (data: { item: FlattenedItem; index: number }) => {
@@ -46,7 +44,7 @@ const collapseNode = (id: string) => {
 
 <template>
   <section class="demo-section">
-<h2>Custom Rendering</h2>
+    <h2>Custom Rendering</h2>
     <p class="demo-description">Customize tree node content, expand/collapse icons and styles</p>
     <div class="demo-controls">
       <button @click="expandNode('projects')">Expand Projects</button>
@@ -72,11 +70,7 @@ const collapseNode = (id: string) => {
             @click.stop="toggleExpand"
           >
           </span>
-          <span
-            v-else
-            class="node-icon"
-            :class="{ 'is-leaf': isLeaf }"
-          ></span>
+          <span v-else class="node-icon" :class="{ 'is-leaf': isLeaf }"></span>
 
           <span class="folder-icon">
             {{ isLeaf ? "📁" : isExpanded ? "📂" : "📁" }}
@@ -96,7 +90,7 @@ const collapseNode = (id: string) => {
   border-radius: 6px;
 }
 
-.folder-item:hover{
+.folder-item:hover {
   background: rgba(0, 0, 0, 0.05);
 }
 

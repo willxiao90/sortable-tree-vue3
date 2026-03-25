@@ -1,9 +1,4 @@
-import type {
-  UniqueIdentifier,
-  TreeItem,
-  FlattenedItem,
-  DragProjection,
-} from "../types/tree";
+import type { UniqueIdentifier, TreeItem, FlattenedItem, DragProjection } from "../types/tree";
 import { arrayMove } from "./array";
 
 export function flattenTree(
@@ -30,9 +25,7 @@ export function flattenTree(
     });
 
     if (hasChildren) {
-      result.push(
-        ...flattenTree(item.children ?? [], id, depth + 1, currentPath),
-      );
+      result.push(...flattenTree(item.children ?? [], id, depth + 1, currentPath));
     }
   }
 
@@ -82,10 +75,9 @@ export function getProjection(
   const newItems = arrayMove(flattenedItems, activeIndex, overIndex);
 
   const previousItem = newItems[overIndex - 1];
-  let maxDepth =
-    previousItem?.depth !== undefined ? previousItem.depth + 1 : 0;
-  if(depthLimit !== Infinity){
-    const activeItemHeight = getTreeHeight(activeItem.originalItem)
+  let maxDepth = previousItem?.depth !== undefined ? previousItem.depth + 1 : 0;
+  if (depthLimit !== Infinity) {
+    const activeItemHeight = getTreeHeight(activeItem.originalItem);
     maxDepth = Math.min(maxDepth, depthLimit - activeItemHeight);
   }
 
@@ -101,10 +93,7 @@ export function getProjection(
 
   if (depth === 0) {
     parentId = null;
-  } else if (
-    previousItem?.depth !== undefined &&
-    depth === previousItem.depth
-  ) {
+  } else if (previousItem?.depth !== undefined && depth === previousItem.depth) {
     parentId = previousItem.parentId;
   } else if (previousItem?.depth !== undefined && depth > previousItem.depth) {
     parentId = previousItem.id;
@@ -135,23 +124,17 @@ export function removeChildrenOf(
     }
   }
 
-  return items.filter(
-    (item) => !directlyNested.has(item.id) && !nested.has(item.id),
-  );
+  return items.filter((item) => !directlyNested.has(item.id) && !nested.has(item.id));
 }
 
 export function getDescendants(
   items: FlattenedItem[],
-  parentId: UniqueIdentifier
+  parentId: UniqueIdentifier,
 ): Set<UniqueIdentifier> {
   const directChildren = items.filter((item) => item.parentId === parentId);
 
   return directChildren.reduce((descendants, child) => {
-    return new Set([
-      ...descendants,
-      child.id,
-      ...getDescendants(items, child.id),
-    ]);
+    return new Set([...descendants, child.id, ...getDescendants(items, child.id)]);
   }, new Set<UniqueIdentifier>());
 }
 
@@ -165,4 +148,3 @@ export function getTreeHeight(item: TreeItem, initial: number = 0): number {
   }
   return res;
 }
-

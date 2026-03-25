@@ -24,9 +24,7 @@ export function useTreeDrag(
     overId: null as UniqueIdentifier | null,
   });
 
-  const getEventPosition = (
-    event: MouseEvent | TouchEvent,
-  ): { x: number; y: number } => {
+  const getEventPosition = (event: MouseEvent | TouchEvent): { x: number; y: number } => {
     if (isTouchEvent(event)) {
       const touch = event.touches[0];
       if (touch) {
@@ -42,11 +40,7 @@ export function useTreeDrag(
   }
 
   const projection = computed(() => {
-    if (
-      !dragState.value.isDragging ||
-      !dragState.value.draggedId ||
-      !dragState.value.overId
-    ) {
+    if (!dragState.value.isDragging || !dragState.value.draggedId || !dragState.value.overId) {
       return null;
     }
 
@@ -67,11 +61,7 @@ export function useTreeDrag(
     return props.disabled ?? false;
   }
 
-  function handleDragStart(
-    evt: MouseEvent | TouchEvent,
-    item: FlattenedItem,
-    index: number,
-  ) {
+  function handleDragStart(evt: MouseEvent | TouchEvent, item: FlattenedItem, index: number) {
     if (isDisabled(item, index)) return;
 
     const pos = getEventPosition(evt);
@@ -138,14 +128,10 @@ export function useTreeDrag(
     const { depth, parentId } = proj;
 
     if (from !== to || depth !== item.depth) {
-      const clonedItems: FlattenedItem[] = JSON.parse(
-        JSON.stringify(flattenTree(props.items)),
-      );
+      const clonedItems: FlattenedItem[] = JSON.parse(JSON.stringify(flattenTree(props.items)));
 
       const overIndex = clonedItems.findIndex(({ id }) => id === state.overId);
-      const activeIndex = clonedItems.findIndex(
-        ({ id }) => id === state.draggedId,
-      );
+      const activeIndex = clonedItems.findIndex(({ id }) => id === state.draggedId);
       const activeItem = clonedItems[activeIndex]!;
 
       clonedItems[activeIndex] = { ...activeItem, depth, parentId };

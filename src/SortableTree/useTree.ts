@@ -1,14 +1,8 @@
 import { ref, computed, watch } from "vue";
-import type {
-  UniqueIdentifier,
-  FlattenedItem,
-  SortableTreeProps,
-} from "../types/tree";
+import type { UniqueIdentifier, FlattenedItem, SortableTreeProps } from "../types/tree";
 import { flattenTree, getDescendants } from "../utils/tree";
 
-export function useTree(
-  props: Required<SortableTreeProps>,
-) {
+export function useTree(props: Required<SortableTreeProps>) {
   const flattenedItems = ref<FlattenedItem[]>([]);
   const collapsedIds = ref<Set<UniqueIdentifier>>(new Set());
   const tempHiddenIds = ref<Set<UniqueIdentifier>>(new Set());
